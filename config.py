@@ -1,6 +1,5 @@
 import json
 import os
-
 class BertConfig:
     def __init__(self, config_path="./config.json"):
         """
@@ -13,7 +12,6 @@ class BertConfig:
 
         # 自动把所有 key 变成类属性！！！
         self.__dict__.update(config_dict)
-
 # 测试
 if __name__ == "__main__":
     cfg = BertConfig()
