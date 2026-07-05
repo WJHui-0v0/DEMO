@@ -1,4 +1,5 @@
 import pandas as pd
+import torch
 from torch.utils.data import Dataset
 import os
 
@@ -47,3 +48,21 @@ class NewsDataset(Dataset):
         text = str(self.df.iloc[idx]["text"])  #iloc取第idx行text列
         label = self.df.iloc[idx]["label"]
         return {"text": text, "label": label}
+
+    def collate_fn(self, batch):
+        #直接取self的tokenizer/max_len
+        texts = [item["text"] for item in batch]
+        labels = torch.tensor([item["label"] for item in batch], dtype=torch.long)
+
+        enc = self.tokenizer(
+            texts,
+            truncation=True,
+            padding="longest",
+            max_length=self.max_len,
+            return_tensors="pt",
+        )
+        return {
+            "input_ids": enc["input_ids"],
+            "attention_mask": enc["attention_mask"],
+            "label": labels
+        }

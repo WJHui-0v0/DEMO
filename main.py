@@ -27,24 +27,24 @@ def set_seed(seed):
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
     torch.use_deterministic_algorithms(True)
-def collate_fn(batch, tokenizer, max_len):
-    # 提取当前批次所有文本、标签
-    texts = [item["text"] for item in batch]
-    labels = torch.tensor([item["label"] for item in batch], dtype=torch.long)
-
-    # API：padding="longest"
-    enc = tokenizer(
-        texts,
-        truncation=True,
-        padding="longest",  #当前batch最长补齐
-        max_length=max_len,
-        return_tensors="pt",
-    )
-    return {
-        "input_ids": enc["input_ids"],
-        "attention_mask": enc["attention_mask"],
-        "label": labels
-    }
+# def collate_fn(batch, tokenizer, max_len):
+#     # 提取当前批次所有文本、标签
+#     texts = [item["text"] for item in batch]
+#     labels = torch.tensor([item["label"] for item in batch], dtype=torch.long)
+#
+#     # API：padding="longest"
+#     enc = tokenizer(
+#         texts,
+#         truncation=True,
+#         padding="longest",  #当前batch最长补齐
+#         max_length=max_len,
+#         return_tensors="pt",
+#     )
+#     return {
+#         "input_ids": enc["input_ids"],
+#         "attention_mask": enc["attention_mask"],
+#         "label": labels
+#     }
 def main():
     parser = argparse.ArgumentParser(description="00demo1")
     parser.add_argument(
@@ -90,20 +90,20 @@ def main():
         train_dataset,
         batch_size=cfg["batch_size"],
         shuffle=True,
-        collate_fn=lambda batch: collate_fn(batch, tokenizer, cfg["max_len"])
+        collate_fn=train_dataset.collate_fn
         # collate_fn 只能接收一个参数 batch，用 lambda 做一层参数包装、转发。
     )
     dev_loader = DataLoader(
         dev_dataset,
         batch_size=cfg["batch_size"],
         shuffle=False,
-        collate_fn=lambda batch: collate_fn(batch, tokenizer, cfg["max_len"])
+        collate_fn=dev_dataset.collate_fn
     )
     test_loader = DataLoader(
         test_dataset,
         batch_size=cfg["batch_size"],
         shuffle=False,
-        collate_fn=lambda batch: collate_fn(batch, tokenizer, cfg["max_len"])
+        collate_fn=test_dataset.collate_fn
     )
 
     # 初始化模型
