@@ -35,7 +35,8 @@ DEMO/
 │   ├── train_3k.txt               # 训练集，共3000条
 │   ├── dev_1k.txt                 # 验证集，1000条，用于训练、保存最优模型
 │   └── test_1k.txt                # 测试集，1064条
-├── config.json                    # 超参数配置文件，存储模型路径、批次、学习率、训练轮数、数据集路径等全部可调参数；
+├── configs/                       # 配置json文件目录
+│   └── exp_bert-base-chinese_lr2e-5_bs16_len128_0704.json          # 超参数配置文件，存储模型路径、批次、学习率、训练轮数、数据集路径等全部可调参数；
 ├── config_utils.py                # 提供配置加载与标签编码生成两个工具函数
 ├── dataset.py                     # 自定义数据集Dataset类
 ├── main.py                        # 执行数据加载→训练→最优模型保存→测试评估全流程
@@ -44,7 +45,7 @@ DEMO/
 ├── model.py                       # 基于预训练中文 BERT 搭建分类网络 BertClassifier
 ```
 
-## 四、config.json 配置说明
+## 四、exp_bert-base-chinese_lr2e-5_bs16_len128_0704.json 配置说明
 
 ```
 {
