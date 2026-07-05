@@ -33,7 +33,7 @@ def main():
     parser.add_argument(
         "--config_path",
         type=str,
-        default="config.json",
+        default="exp_bert-base-chinese_lr2e-5_bs16_len128_0704.json",
         help="配置json路径，默认config.json"
     )
     args = parser.parse_args()

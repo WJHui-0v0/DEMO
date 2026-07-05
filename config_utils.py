@@ -1,7 +1,7 @@
 import json
 import os
 
-def load_config(config_path="config.json"):
+def load_config(config_path="exp_bert-base-chinese_lr2e-5_bs16_len128_0704.json"):
     if not os.path.exists(config_path):
         raise FileNotFoundError(f"配置文件不存在：{config_path}")
     with open(config_path, "r", encoding="utf-8") as f:
