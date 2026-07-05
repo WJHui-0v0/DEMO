@@ -94,7 +94,7 @@ news_entertainment     0.8879    0.8796    0.8837       108
 ```
 - Loss & Acc 曲线如下 [在线链接](https://swanlab.cn/@displan0v0/bert-toutiao-classify/runs/exn5cj8s3ybg2b15ibf5m/chart)
 
-![img.png](img.png)
+![img.png](data/img.png)
 
 ## 五、实验分析
 - 本实验基于 BERT 模型完成多类别新闻文本分类任务，共设置 5 轮训练，通过验证集精度保存最优模型。

@@ -3,7 +3,7 @@ import torch
 import torch.nn as nn
 from sklearn.metrics import accuracy_score
 from tqdm import tqdm
-def train_epoch(model, loader, opt, scheduler, device):  # 优化器，学习率调度器
+def train_epoch(model, loader, opt, scheduler,criterion, device):  # 优化器，学习率调度器
     model.train()
     total_loss = 0
     preds, trues = [], []   # 收集所有批次的预测值和真实标签
@@ -16,7 +16,7 @@ def train_epoch(model, loader, opt, scheduler, device):  # 优化器，学习率
 
         opt.zero_grad()
         logits = model(input_ids, mask)
-        loss = nn.CrossEntropyLoss()(logits, label)
+        loss = criterion(logits, label)
         loss.backward()
         opt.step()
         scheduler.step()
@@ -29,7 +29,7 @@ def train_epoch(model, loader, opt, scheduler, device):  # 优化器，学习率
     acc = accuracy_score(trues, preds)
     return avg_loss, acc
 
-def eval_epoch(model, loader, device):
+def eval_epoch(model, loader, criterion,device):
     model.eval()  # Dropout 关闭，固定参数
     total_loss = 0
     preds, trues = [], []
@@ -40,7 +40,7 @@ def eval_epoch(model, loader, device):
             label = batch["label"].to(device)
 
             logits = model(input_ids, mask)
-            loss = nn.CrossEntropyLoss()(logits, label)
+            loss = criterion(logits, label)
             total_loss += loss.item()
 
             preds.extend(torch.argmax(logits, dim=1).cpu().numpy())

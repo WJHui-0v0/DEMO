@@ -3,10 +3,11 @@ import argparse
 import random
 import numpy as np
 import torch
+from torch import nn
 from torch.optim import AdamW
 from torch.utils.data import DataLoader
 from transformers import BertTokenizer, get_linear_schedule_with_warmup
-from sklearn.metrics import accuracy_score, classification_report
+from sklearn.metrics import classification_report
 from tqdm import tqdm
 import swanlab
 import os
@@ -112,6 +113,7 @@ def main():
         dropout=cfg["dropout"]
     ).to(device)
 
+    criterion = nn.CrossEntropyLoss()
     optimizer = AdamW(model.parameters(), lr=cfg["lr"])  # 更新参数
     total_steps = len(train_loader) * cfg["epochs"] # 一个 epoch 有多少个 batch * 训练轮数  =  总更新步数
 
@@ -124,8 +126,8 @@ def main():
     best_acc_dev = 0
     for epoch in range(cfg["epochs"]):
         print(f"\n===== Epoch {epoch+1}/{cfg['epochs']} =====")
-        train_loss, train_acc = train_epoch(model, train_loader, optimizer, scheduler, device)
-        dev_loss, dev_acc, preds, trues = eval_epoch(model, dev_loader, device)
+        train_loss, train_acc = train_epoch(model, train_loader, optimizer, scheduler, criterion, device)
+        dev_loss, dev_acc, preds, trues = eval_epoch(model, dev_loader, criterion, device)
 
         if dev_acc > best_acc_dev:
             best_acc_dev = dev_acc
