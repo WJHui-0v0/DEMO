@@ -1,6 +1,6 @@
 {
     "project": "bert-toutiao-classify",
-    "experiment_name": "bert-base-chinese",
+    "experiment_name": "bert-base-chinese0704",
     "model_name": "bert-base-chinese",
     "num_classes": 15,
     "max_len": 128,
@@ -10,6 +10,9 @@
     "dropout": 0.1,
     "train_path": "./data/train_3k.txt",
     "test_path": "./data/test_1k.txt",
-    "save_path": "./best_bert.pth"
+    "dev_path": "./data/dev_1k.txt",
+    "save_path": "./best_bert.pth",
+    "seed": 111,
+    "label_map_path":"./label_map.json"
 
 }
