@@ -11,7 +11,7 @@
     "train_path": "./data/train_3k.txt",
     "test_path": "./data/test_1k.txt",
     "dev_path": "./data/dev_1k.txt",
-    "save_path": "./best_bert.pth",
+    "save_path": "./output/best_bert.pth",
     "seed": 111,
     "label_map_path":"./label_map.json"
 }

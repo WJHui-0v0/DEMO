@@ -13,7 +13,7 @@ import swanlab
 import os
 # 模块导入
 from config_utils import load_config, get_label2id
-from dataset import load_txt_data, NewsDataset
+from dataset import NewsDataset
 from model import BertClassifier
 from train import train_epoch, eval_epoch
 def set_seed(seed):
@@ -27,24 +27,7 @@ def set_seed(seed):
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
     torch.use_deterministic_algorithms(True)
-# def collate_fn(batch, tokenizer, max_len):
-#     # 提取当前批次所有文本、标签
-#     texts = [item["text"] for item in batch]
-#     labels = torch.tensor([item["label"] for item in batch], dtype=torch.long)
-#
-#     # API：padding="longest"
-#     enc = tokenizer(
-#         texts,
-#         truncation=True,
-#         padding="longest",  #当前batch最长补齐
-#         max_length=max_len,
-#         return_tensors="pt",
-#     )
-#     return {
-#         "input_ids": enc["input_ids"],
-#         "attention_mask": enc["attention_mask"],
-#         "label": labels
-#     }
+
 def main():
     parser = argparse.ArgumentParser(description="00demo1")
     parser.add_argument(
@@ -73,17 +56,10 @@ def main():
     tokenizer = BertTokenizer.from_pretrained(cfg["model_name"])  # BERT 模型专用的分词器
 
     label2id = get_label2id(txt_path=cfg["train_path"], save_path=cfg["label_map_path"])
-    train_df = load_txt_data(txt_path=cfg["train_path"], label_map=label2id)
-    dev_df = load_txt_data(txt_path=cfg["dev_path"], label_map=label2id)
-    test_df = load_txt_data(txt_path=cfg["test_path"], label_map=label2id)
 
-    if len(train_df) == 0 or len(dev_df) == 0 or len(test_df) == 0:
-        print("请检查数据集是否存在")
-        exit()
-
-    train_dataset = NewsDataset(df=train_df, tokenizer=tokenizer, max_len=cfg["max_len"])
-    dev_dataset = NewsDataset(df=dev_df, tokenizer=tokenizer, max_len=cfg["max_len"])
-    test_dataset = NewsDataset(df=test_df, tokenizer=tokenizer, max_len=cfg["max_len"])
+    train_dataset = NewsDataset.load_txt_data(txt_path=cfg["dev_path"],label_map=label2id, tokenizer=tokenizer, max_len=cfg["max_len"])
+    dev_dataset = NewsDataset.load_txt_data(txt_path=cfg["dev_path"], label_map=label2id, tokenizer=tokenizer, max_len=cfg["max_len"])
+    test_dataset = NewsDataset.load_txt_data(txt_path=cfg["dev_path"],label_map=label2id, tokenizer=tokenizer, max_len=cfg["max_len"])
 
 
     train_loader = DataLoader(

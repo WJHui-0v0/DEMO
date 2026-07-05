@@ -31,13 +31,13 @@ pip install -r requirements.txt
 ```
 DEMO/
 ├── data/                          # 数据集目录
+│   ├── label_map.json             # 自动生成的标签-数字映射文件
 │   ├── train_3k.txt               # 训练集，共3000条
 │   ├── dev_1k.txt                 # 验证集，1000条，用于训练、保存最优模型
 │   └── test_1k.txt                # 测试集，1064条
-├── label_map.json                 # 自动生成的标签-数字映射文件
 ├── config.json                    # 超参数配置文件，存储模型路径、批次、学习率、训练轮数、数据集路径等全部可调参数；
 ├── config_utils.py                # 提供配置加载与标签编码生成两个工具函数
-├── dataset.py                     # 负责原始文本加载，自定义数据集Dataset类
+├── dataset.py                     # 自定义数据集Dataset类
 ├── main.py                        # 执行数据加载→训练→最优模型保存→测试评估全流程
 ├── train.py                       # 单轮训练、单轮验证两个函数
 ├── requirements.txt               # 项目环境依赖清单，包含torch、transformers、swanlab、sklearn等第三方库
