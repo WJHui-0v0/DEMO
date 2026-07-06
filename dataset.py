@@ -21,8 +21,7 @@ class NewsDataset(Dataset):
         )
         data = []
         if not os.path.exists(txt_path):
-            print(f"文件不存在：{txt_path}")
-            self.df = pd.DataFrame()
+            raise FileNotFoundError(f"数据集文件不存在，请检查路径：{txt_path}")
 
         with open(txt_path, "r", encoding="utf-8", errors="ignore") as f:
             for line in f:
