@@ -4,9 +4,9 @@ from torch import nn
 import argparse
 from torch.optim import AdamW
 from torch.utils.data import DataLoader
-from transformers import BertTokenizer, get_linear_schedule_with_warmup
+from transformers import  get_linear_schedule_with_warmup
 import swanlab
-import os
+
 # 模块导入
 from utils.config_utils import load_config, get_label2id
 from dataset import NewsDataset
