@@ -5,10 +5,10 @@ from tqdm import tqdm
 
 
 class Trainer:
-    def __init__(self,model,opt,sheduler,criterion,device):
+    def __init__(self,model,opt,scheduler,criterion,device):
         self.model = model
         self.opt = opt
-        self.sheduler = sheduler
+        self.scheduler = scheduler
         self.criterion = criterion
         self.device = device
         
@@ -27,7 +27,7 @@ class Trainer:
             loss = self.criterion(logits, label)
             loss.backward()
             self.opt.step()
-            self.sheduler.step()
+            self.scheduler.step()
 
             total_loss += loss.item()
             preds.extend(torch.argmax(logits, dim=1).cpu().numpy())    

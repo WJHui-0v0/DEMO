@@ -15,7 +15,7 @@
 5. 核心功能
    - 自定义Dataset实现文本分词、编码、动态批处理
    - JSON 配置文件统一管理超参数，自动生成标签-数字映射文件
-   - 训练循环、验证评估、最优模型自动保存完整 checkpoint，支持断点续训
+   - 训练循环、验证评估、最优模型自动保存完整 checkpoint
    - 完整分类指标输出（Acc、Precision、Recall、F1）
    - 训练损失/精度曲线SwanLab可视化记录
 
@@ -36,8 +36,9 @@ DEMO/
 │   ├── dev_1k.txt                 # 验证集，1000条，用于训练、保存最优模型
 │   └── test_1k.txt                # 测试集，1064条
 ├── configs/                       # 配置json文件目录
-│   └── exp_bert-base-chinese_lr2e-5_bs16_len128_0704.json          # 超参数配置文件，存储模型路径、批次、学习率、训练轮数、数据集路径等全部可调参数；
-├── config_utils.py                # 提供配置加载与标签编码生成两个工具函数
+│   └──exp_bert-base-chinese_lr2e-5_bs16_len128_0704.json    # 超参数配置文件，存储模型路径、批次、学习率、训练轮数、数据集路径等全部可调参数；
+├── utils                          # 工具目录
+│   └──config_utils.py             # 提供配置加载与标签编码生成两个工具函数
 ├── dataset.py                     # 自定义数据集Dataset类
 ├── main.py                        # 执行数据加载→训练→最优模型保存→测试评估全流程
 ├── train.py                       # 含单轮训练、单轮验证两个函数的类
