@@ -7,15 +7,13 @@ from torch import nn
 from torch.optim import AdamW
 from torch.utils.data import DataLoader
 from transformers import BertTokenizer, get_linear_schedule_with_warmup
-from sklearn.metrics import classification_report
-from tqdm import tqdm
 import swanlab
 import os
 # 模块导入
 from config_utils import load_config, get_label2id
 from dataset import NewsDataset
 from model import BertClassifier
-from train import train_epoch, eval_epoch
+from train import Trainer, eval_epoch
 
 def my_classification_report(y_true, y_pred, target_names, digits=4):
     n_classes = len(target_names)  #总数量
@@ -177,14 +175,21 @@ def main():
     )
     save_path = cfg.get("save_path", "best_model_checkpoint.pth")
     best_acc_dev = 0
+   
+    trainer = Trainer(
+        model=model,
+        optimizer=optimizer,
+        scheduler=scheduler,
+        criterion=criterion,
+        device=device
+    )
     for epoch in range(cfg["epochs"]):
         print(f"\n===== Epoch {epoch+1}/{cfg['epochs']} =====")
-        train_loss, train_acc = train_epoch(model, train_loader, optimizer, scheduler, criterion, device)
-        dev_loss, dev_acc, preds, trues = eval_epoch(model, dev_loader, criterion, device)
+        train_loss, train_acc = trainer.train_epoch(train_loader)
+        dev_loss, dev_acc, preds, trues = trainer.eval_epoch(dev_loader)
 
         if dev_acc > best_acc_dev:
             best_acc_dev = dev_acc
-
             checkpoint_dict = {
                 "current_epoch": epoch,  # 当前训练到第几轮
                 "model_state_dict": model.state_dict(),  # 模型权重
