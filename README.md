@@ -95,10 +95,9 @@ news_entertainment     0.8879    0.8796    0.8837       108
          macro avg     0.8514    0.8164    0.8284      1064
       weighted avg     0.8436    0.8383    0.8385      1064
 ```
-- Loss & Acc 曲线如下 [在线链接](https://swanlab.cn/@displan0v0/bert-toutiao-classify/runs/exn5cj8s3ybg2b15ibf5m/chart)
-
-![img.png](data/img.png)
-
+- Loss & Acc 曲线如下 
+- [在线链接](https://swanlab.cn/@displan0v0/bert-toutiao-classify?utm_source=website_qr&utm_medium=qr_scan)
+- 
 ## 五、实验分析
 - 本实验基于 BERT 模型完成多类别新闻文本分类任务，共设置 5 轮训练，通过验证集精度保存最优模型。
 训练过程中模型训练损失持续下降、训练准确率逐步提升至 96.47%，验证集准确率在第 4 轮达到峰值 82.80%，
