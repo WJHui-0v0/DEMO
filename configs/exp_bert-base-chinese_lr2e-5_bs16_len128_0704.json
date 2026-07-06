@@ -13,5 +13,5 @@
     "dev_path": "./data/dev_1k.txt",
     "save_path": "./output/best_bert.pth",
     "seed": 111,
-    "label_map_path":"./label_map.json"
+    "label_map_path":"./data/label_map.json"
 }

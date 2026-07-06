@@ -39,21 +39,18 @@ def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print("训练使用设备:",device,"随机种子:",seed_num)
 
-    tokenizer = BertTokenizer.from_pretrained(cfg["model_name"])  # BERT 模型专用的分词器
-
     label2id = get_label2id(txt_path=cfg["train_path"], save_path=cfg["label_map_path"])
 
-    train_dataset = NewsDataset.load_txt_data(txt_path=cfg["train_path"],label_map=label2id, tokenizer=tokenizer, max_len=cfg["max_len"])
-    dev_dataset = NewsDataset.load_txt_data(txt_path=cfg["dev_path"], label_map=label2id, tokenizer=tokenizer, max_len=cfg["max_len"])
-    test_dataset = NewsDataset.load_txt_data(txt_path=cfg["test_path"],label_map=label2id, tokenizer=tokenizer, max_len=cfg["max_len"])
-
+    # 只传 cfg、文件路径、标签映射，不用传tokenizer、max_len
+    train_dataset = NewsDataset(cfg, cfg["train_path"])
+    dev_dataset = NewsDataset(cfg, cfg["dev_path"])
+    test_dataset = NewsDataset(cfg, cfg["test_path"])
 
     train_loader = DataLoader(
         train_dataset,
         batch_size=cfg["batch_size"],
         shuffle=True,
         collate_fn=train_dataset.collate_fn
-        # collate_fn 只能接收一个参数 batch，用 lambda 做一层参数包装、转发。
     )
     dev_loader = DataLoader(
         dev_dataset,
