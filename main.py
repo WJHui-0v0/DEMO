@@ -8,12 +8,12 @@ from transformers import  get_linear_schedule_with_warmup
 import swanlab
 
 # 模块导入
-from utils.config_utils import load_config, get_label2id
+from utils.config_utils import load_config
 from dataset import NewsDataset
 from model import BertClassifier
 from train import Trainer
-from utils.utils_metrics import my_classification_report, set_seed
-
+from utils.my_classification_report import my_classification_report
+from utils.seed import set_seed
 def main():
     parser = argparse.ArgumentParser(description="00demo1")
     parser.add_argument(
@@ -39,12 +39,10 @@ def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print("训练使用设备:",device,"随机种子:",seed_num)
 
-    label2id = get_label2id(txt_path=cfg["train_path"], save_path=cfg["label_map_path"])
-
     # 只传 cfg、文件路径、标签映射，不用传tokenizer、max_len
-    train_dataset = NewsDataset(cfg, cfg["train_path"])
-    dev_dataset = NewsDataset(cfg, cfg["dev_path"])
-    test_dataset = NewsDataset(cfg, cfg["test_path"])
+    train_dataset = NewsDataset(cfg, mode="train")
+    dev_dataset = NewsDataset(cfg, mode="dev")
+    test_dataset = NewsDataset(cfg, mode="test")
 
     train_loader = DataLoader(
         train_dataset,
@@ -133,7 +131,7 @@ def main():
     report = my_classification_report(
         y_true=trues,
         y_pred=preds,
-        target_names=list(label2id.keys()),
+        target_names=list(test_dataset.label2id.keys()),
         digits=4
     )
     print(report)
