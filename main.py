@@ -39,7 +39,6 @@ def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print("训练使用设备:",device,"随机种子:",seed_num)
 
-    # 只传 cfg、文件路径、标签映射，不用传tokenizer、max_len
     train_dataset = NewsDataset(cfg, mode="train")
     dev_dataset = NewsDataset(cfg, mode="dev")
     test_dataset = NewsDataset(cfg, mode="test")

@@ -14,14 +14,14 @@ class NewsDataset(Dataset):
 
         self.mode = mode
         # 对应文件路径
-        if mode == "train":
-            self.txt_path = cfg["train_path"]
-        elif mode == "dev":
-            self.txt_path = cfg["dev_path"]
-        elif mode == "test":
-            self.txt_path = cfg["test_path"]
-        else:
+        path_map = {
+            "train": cfg["train_path"],
+            "dev": cfg["dev_path"],
+            "test": cfg["test_path"]
+        }
+        if mode not in path_map:
             raise ValueError("mode只能填train/dev/test")
+        self.txt_path = path_map[mode]
 
         self.label2id = get_label2id(cfg)
         if not os.path.exists(self.txt_path):
