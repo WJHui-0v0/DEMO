@@ -1,9 +1,7 @@
 import torch
 from torch.utils.data import Dataset
 import os
-
 from transformers import BertTokenizer
-
 from utils.config_utils import get_label2id
 
 class NewsDataset(Dataset):
@@ -25,10 +23,7 @@ class NewsDataset(Dataset):
         else:
             raise ValueError("mode只能填train/dev/test")
 
-        self.label2id = get_label2id(
-            txt_path=cfg["train_path"],
-            save_path=self.label_map_path
-        )
+        self.label2id = get_label2id(cfg)
         if not os.path.exists(self.txt_path):
             raise FileNotFoundError(f"数据集文件不存在，请检查路径：{self.txt_path}")
         self.data = None

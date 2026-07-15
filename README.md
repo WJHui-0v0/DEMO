@@ -38,13 +38,14 @@ DEMO/
 ├── configs/                       # 配置json文件目录
 │   └──exp_bert-base-chinese_lr2e-5_bs16_len128_0704.json    # 超参数配置文件，存储模型路径、批次、学习率、训练轮数、数据集路径等全部可调参数；
 ├── utils                          # 工具目录
-│   ├── config_utils.py            # 提供配置加载与标签编码生成两个工具函数
-│   └── utils_metrics.py           # 随机种子+分类报告
+│   ├──config_utils.py             # 提供配置加载与标签编码生成两个工具函数
+│   ├──my_classification_report.py # 分类报告
+│   └──seed.py           # 随机种子
 ├── dataset.py                     # 自定义数据集Dataset类
 ├── main.py                        # 执行数据加载→训练→最优模型保存→测试评估全流程
 ├── train.py                       # 含单轮训练、单轮验证两个函数的类
 ├── requirements.txt               # 项目环境依赖清单，包含torch、transformers、swanlab、sklearn等第三方库
-├── model.py                       # 基于预训练中文 BERT 搭建分类网络 BertClassifier
+└── model.py                       # 基于预训练中文 BERT 搭建分类网络 BertClassifier
 ```
 
 ## 四、exp_bert-base-chinese_lr2e-5_bs16_len128_0704.json 配置说明

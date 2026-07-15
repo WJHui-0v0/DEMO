@@ -120,7 +120,6 @@ def main():
 
     print("\n===== 加载最优权重进行最终测试 =====")
     model.load_state_dict(torch.load(save_path)["model_state_dict"])
-    model.to(device)
 
     test_loss, test_acc, preds, trues = trainer.eval_epoch(test_loader)
     swanlab.log({

@@ -8,7 +8,10 @@ def load_config(config_path="exp_bert-base-chinese_lr2e-5_bs16_len128_0704.json"
         cfg = json.load(f)
     return cfg
 
-def get_label2id(txt_path, save_path):
+def get_label2id(cfg):
+    # cfg中提取
+    txt_path = cfg["train_path"]
+    save_path = cfg["label_save_path"]
     # 读取
     if os.path.exists(save_path):
         with open(save_path, "r", encoding="utf-8") as f:
