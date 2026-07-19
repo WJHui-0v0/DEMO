@@ -99,11 +99,11 @@ def main():
             "train/acc": train_acc,
             "dev/loss": dev_loss,
             "dev/acc": dev_acc,
-            "best/acc": trainer.best_acc_dev
+            "best/acc": trainer.best_dev_acc
         })
 
         print(f"train loss: {train_loss:.4f} acc: {train_acc:.4f}")
-        print(f"dev loss: {dev_loss:.4f} acc: {dev_acc:.4f} best: {trainer.best_acc_dev:.4f}")
+        print(f"dev loss: {dev_loss:.4f} acc: {dev_acc:.4f} best: {trainer.best_dev_acc:.4f}")
 
     print("\n===== 加载最优权重进行最终测试 =====")
     model.load_state_dict(torch.load(save_path)["model_state_dict"])
