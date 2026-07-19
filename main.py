@@ -1,4 +1,5 @@
-# ===================== 一、第三方库导入 =====================
+import os
+os.environ["HF_ENDPOINT"] = "https://hf-mirror.com"
 import torch
 from torch import nn
 import argparse

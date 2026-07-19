@@ -1,17 +1,21 @@
 import json
 import os
 
+from transformers import BertTokenizer
+
+
 def load_config(config_path="exp_bert-base-chinese_lr2e-5_bs16_len128_0704.json"):
     if not os.path.exists(config_path):
         raise FileNotFoundError(f"配置文件不存在：{config_path}")
     with open(config_path, "r", encoding="utf-8") as f:
         cfg = json.load(f)
+    cfg["tokenizer"] = BertTokenizer.from_pretrained(cfg["model_name"])
     return cfg
 
 def get_label2id(cfg):
     # cfg中提取
     txt_path = cfg["train_path"]
-    save_path = cfg["label_save_path"]
+    save_path = cfg["label_map_path"]
     # 读取
     if os.path.exists(save_path):
         with open(save_path, "r", encoding="utf-8") as f:

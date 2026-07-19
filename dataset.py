@@ -1,5 +1,5 @@
 import torch
-from torch.utils.data import Dataset
+from torch.utils.data import Dataset, DataLoader
 import os
 from transformers import BertTokenizer
 from utils.config_utils import get_label2id
@@ -8,10 +8,9 @@ class NewsDataset(Dataset):
     def __init__(self, cfg, mode):
         self.cfg = cfg
         self.model_name = cfg["model_name"]
-        self.tokenizer = BertTokenizer.from_pretrained(self.model_name) # 分词器
         self.max_len = cfg["max_len"]
         self.label_map_path = cfg["label_map_path"]
-
+        self.tokenizer = cfg["tokenizer"]
         self.mode = mode
         # 对应文件路径
         path_map = {
