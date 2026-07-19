@@ -28,15 +28,17 @@ def get_label2id(cfg):
     # 遍历文件收集所有原始标签 集合
     label_set = set()
     with open(txt_path, "r", encoding="utf-8", errors="ignore") as f:
-        for line in f:
-            line = line.strip()
-            if not line:
-                continue
-            parts = line.split("_!_")
-            if len(parts) < 4:
-                continue
-            category_en = parts[2]
-            label_set.add(category_en)
+        lines = f.read().splitlines()
+    for line in lines:
+        line = line.strip()
+        if not line:
+            continue
+        parts = line.split("_!_")
+        if len(parts) < 4:
+            continue
+        category_en = parts[2]
+        label_set.add(category_en)
+
     # enumerate 生成映射
     sorted_labels = sorted(label_set)    # 固定标签排序
     label2id = {}

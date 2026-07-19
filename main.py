@@ -80,50 +80,36 @@ def main():
         total_steps
     )
     save_path = cfg.get("save_path", "best_model_checkpoint.pth")
-    best_acc_dev = 0
-   
+
     trainer = Trainer(
         model=model,
         opt=optimizer,
         scheduler=scheduler,
         criterion=criterion,
-        device=device
+        device=device,
+        save_path=save_path
     )
     for epoch in range(cfg["epochs"]):
         print(f"\n===== Epoch {epoch+1}/{cfg['epochs']} =====")
         train_loss, train_acc = trainer.train_epoch(train_loader)
         dev_loss, dev_acc, preds, trues = trainer.eval_epoch(dev_loader)
 
-        if dev_acc > best_acc_dev:
-            best_acc_dev = dev_acc
-            checkpoint_dict = {
-                "current_epoch": epoch,  # 当前训练到第几轮
-                "model_state_dict": model.state_dict(),  # 模型权重
-                "optimizer_state_dict": optimizer.state_dict(),  # 优化器参数
-                "scheduler_state_dict": scheduler.state_dict(),  # 学习率调度器状态
-                "best_validation_acc": best_acc_dev  # 之前最优验证集精度
-            }
-
-            torch.save(checkpoint_dict, save_path)
-            print(f"最优模型已保存：{save_path}")
-
         swanlab.log({
             "train/loss": train_loss,
             "train/acc": train_acc,
             "dev/loss": dev_loss,
             "dev/acc": dev_acc,
-            "best/acc": best_acc_dev
+            "best/acc": trainer.best_acc_dev
         })
 
         print(f"train loss: {train_loss:.4f} acc: {train_acc:.4f}")
-        print(f"dev loss: {dev_loss:.4f} acc: {dev_acc:.4f} best: {best_acc_dev:.4f}")
+        print(f"dev loss: {dev_loss:.4f} acc: {dev_acc:.4f} best: {trainer.best_acc_dev:.4f}")
 
     print("\n===== 加载最优权重进行最终测试 =====")
     model.load_state_dict(torch.load(save_path)["model_state_dict"])
 
-    test_loss, test_acc, preds, trues = trainer.eval_epoch(test_loader)
+    test_acc, preds, trues = trainer.test_epoch(test_loader)
     swanlab.log({
-        "test/loss": test_loss,
         "test/acc": test_acc
     })
     print("\n===== 最终分类报告 =====")

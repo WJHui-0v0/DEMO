@@ -30,22 +30,23 @@ class NewsDataset(Dataset):
     def load_data(self):
         data = []
         with open(self.txt_path, "r", encoding="utf-8", errors="ignore") as f:
-            for line in f:
-                line = line.strip()  # 去掉空白字符
-                if not line:
-                    continue  # 如果not false
-                # 按_!_分割字段！
-                parts = line.split("_!_")
-                if len(parts) < 4:
-                    continue
-                # 字段顺序：0 新闻ID 1 分类code 2 分类名称(英文) 3 新闻标题 4 关键词
-                category_name_en = parts[2]
-                title = parts[3]
-                if category_name_en in self.label2id:
-                    data.append({
-                        "text": title,
-                        "label": self.label2id[category_name_en]  # 键值对对应
-                    })
+            lines = f.read().splitlines()
+        for line in lines:
+            line = line.strip()  # 去掉空白字符
+            if not line:
+                continue  # 如果not false
+            # 按_!_分割字段！
+            parts = line.split("_!_")
+            if len(parts) <  4:
+                continue
+            # 字段顺序：0 新闻ID 1 分类code 2 分类名称(英文) 3 新闻标题 4 关键词
+            category_name_en = parts[2]
+            title = parts[3]
+            if category_name_en in self.label2id:
+                data.append({
+                    "text": title,
+                    "label": self.label2id[category_name_en]  # 键值对对应
+                })
         print(f"加载 {self.txt_path} 完成：{len(data)} 条有效数据")
         return data
     # 多少条
